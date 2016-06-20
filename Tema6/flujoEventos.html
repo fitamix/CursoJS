@@ -1,0 +1,11 @@
+<html onclick="procesaEvento(this)">
+  <head><title>Ejemplo de flujo de eventos</title></head>
+  <body onclick="procesaEvento(this)">
+    <div onclick="procesaEvento(this)">Pincha aqui</div>
+    <script>
+    	function procesaEvento(elemento){
+    		console.log(elemento.nodeName)
+    	}
+    </script>
+  </body>
+</html>
