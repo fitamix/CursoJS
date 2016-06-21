@@ -1,0 +1,20 @@
+<html>
+<body>
+	<script src="moment-with-locales.js"></script>
+	<script>
+		moment.locale('es');
+		var dia = moment("28-01-2008", "DD-MM-YYYY");
+		console.log(dia.format("DD-MM-YYYY"));
+		dia.add(7, 'days');
+		console.log(dia.format("DD-MM-YYYY"));
+
+		var otroDia = dia.fromNow(); 
+		console.log(otroDia);
+
+
+		var now = moment();
+		console.log(now.diff(dia, 'days'));
+
+	</script>
+</body>
+</html>
