@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Ajax con envio y recepcion de XML</title>
+ 
+<script type="text/javascript">
+
+function crea_xml() {
+  var xml = "<parametros>";
+  xml = xml + "<fecha_nacimiento>1-1-2000<\/fecha_nacimiento>";
+  xml = xml + "<codigo_postal>00000<\/codigo_postal>";
+  xml = xml + "<telefono><\/telefono>";
+  xml = xml + "<\/parametros>";
+  return xml;
+}
+
+function descargaArchivo() {
+  // Obtener la instancia del objeto XMLHttpRequest
+  if(window.XMLHttpRequest) {
+    peticion_http = new XMLHttpRequest();
+  }
+  else if(window.ActiveXObject) {
+    peticion_http = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+ 
+  // Preparar la funcion de respuesta
+  peticion_http.onreadystatechange = procesaRespuesta;
+ 
+
+  // Ejemplo POST con parámetros
+  
+  peticion_http.open('POST', '/cursojs/xml.php');
+  peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  var parametros_xml = crea_xml();
+
+  peticion_http.send(parametros_xml);
+
+  function procesaRespuesta() {
+    if(peticion_http.readyState == 4) {
+      if(peticion_http.status == 200) {
+        var documento_xml = peticion_http.responseXML;
+        var root = documento_xml.getElementsByTagName("respuesta")[0];
+   
+        var mensajes = root.getElementsByTagName("mensaje")[0];
+        var mensaje = mensajes.firstChild.nodeValue;
+   
+        var parametros = root.getElementsByTagName("parametros")[0];
+   
+        var telefono = parametros.getElementsByTagName("telefono")[0].firstChild.nodeValue;
+        var fecha_nacimiento = parametros.getElementsByTagName("fecha_nacimiento")[0].firstChild.nodeValue;
+        var codigo_postal = parametros.getElementsByTagName("codigo_postal")[0].firstChild.nodeValue;
+   
+        document.getElementById("respuesta").innerHTML = mensaje + "<br/>" + "Fecha nacimiento = " + fecha_nacimiento + "<br/>" + "Codigo postal = " + codigo_postal + "<br/>" + "Telefono = " + telefono;
+      }
+    }
+  }
+
+}
+ 
+window.onload = descargaArchivo;
+</script>
+ 
+</head>
+<body></body>
+<div id="respuesta"></div>
+</html>

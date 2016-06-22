@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Hola Mundo con AJAX</title>
+ 
+<script type="text/javascript">
+function descargaArchivo() {
+  // Obtener la instancia del objeto XMLHttpRequest
+  if(window.XMLHttpRequest) {
+    peticion_http = new XMLHttpRequest();
+  }
+  else if(window.ActiveXObject) {
+    peticion_http = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+ 
+  // Preparar la funcion de respuesta
+  peticion_http.onreadystatechange = muestraContenido;
+ 
+  // Petición básica a un fichero de texto
+  peticion_http.open('GET', '/cursojs/holamundo.txt');
+  peticion_http.send(null);
+
+  // Ejemplo para cargar un XML => El servidor debe devolver un fichero con la cabecera text/xml
+  /*
+  peticion_http.open('GET', '/cursojs/holamundo.xml', true);
+  peticion_http.send(null);
+  */
+
+  // Ejemplo GET con parámetros
+  /*
+  peticion_http.open('GET', '/cursojs/holamundo.php?a=2&z=5');
+  peticion_http.send(null); 
+  */
+
+  // Ejemplo POST con parámetros
+  /*
+  peticion_http.open('POST', '/cursojs/holamundo.php');
+  peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  peticion_http.send("a=1&b=3");
+  */
+
+  function muestraContenido() {
+    // Comprobar si se ha recibido respuesta del servidor
+    if(peticion_http.readyState == 4) {
+      // Comprobar que el código devuelto por el servidor es un HTTP 200 OK
+      if(peticion_http.status == 200) {
+        alert(peticion_http.responseText);
+
+        //alert(peticion_http.responseXML);
+
+        console.log(peticion_http.getAllResponseHeaders());
+        console.log(peticion_http.getResponseHeader("server"));
+        
+
+      }
+    }
+  }
+}
+ 
+window.onload = descargaArchivo;
+</script>
+ 
+</head>
+<body></body>
+</html>
