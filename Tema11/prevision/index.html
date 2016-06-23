@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDP33ZgjROw-m4aOx6uQasNXaQebxdEvt0"
+  type="text/javascript"></script>
+      <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>          
+</head> 
+<body>
+  <div id="map" ></div>
+
+  <script type="text/javascript">
+
+
+    var lat = 40.41558722527384;
+    var lon = -3.6968994140625;
+    var zoom = 5;
+
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: zoom,
+      center: new google.maps.LatLng(lat, lon)
+    });
+
+    var peticion = null;
+     
+    function inicializa_xhr() {
+      if(window.XMLHttpRequest) {
+        return new XMLHttpRequest(); 
+      } else if (window.ActiveXObject) {
+        return new ActiveXObject("Microsoft.XMLHTTP"); 
+      }
+    }
+     
+    function load() {
+        setInterval(cargaPrediccion, 3000);
+    }
+     
+    function cargaPrediccion() {
+      peticion = inicializa_xhr();
+      peticion.onreadystatechange = muestraPrediccion;
+      peticion.open('GET', 'previsionMeteorologica.php?nocache='+Math.random(), true);
+      peticion.send(null);
+    }
+     
+    function muestraPrediccion() {
+      if(peticion.readyState == 4) {
+        if(peticion.status == 200) {
+          var puntos = eval("("+peticion.responseText+")");
+
+          for(var i=0;i<puntos.length-1;i++){
+            var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(puntos[i].latlon[0], puntos[i].latlon[1]), 
+              map: map,
+              title: puntos[i].prediccion,
+              icon: 'imagenes/' + puntos[i].prediccion + '.png'
+            });
+          }
+        }
+      }
+    }
+
+    load();
+
+  </script>
+</body>
+</html>
+
+
