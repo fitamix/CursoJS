@@ -6,7 +6,7 @@
  */
 
 $url = $_GET["url"];
-$ct = $_GET["ct"]; // Content-Type
+$ct = "text/xml";
 $contenido = "";
 
 if ($f = fopen($url, 'r')) {
