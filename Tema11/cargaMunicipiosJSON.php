@@ -8112,7 +8112,7 @@ $municipios["51"]["0013"] = "Ceuta";
 $municipios["52"]["0018"] = "Melilla";
 
 
-$provincia = trim($_POST["provincia"]);
+$provincia = trim($_REQUEST["provincia"]);
 $losMunicipios = $municipios[$provincia];
 
 foreach($losMunicipios as $codigo => $nombre) {
